@@ -1,0 +1,68 @@
+<style>
+  .btn-search{
+    color: white;
+    background-color:#fe424d ;
+    border-radius: 25px;
+    padding: 0 1rem 0 1rem;
+  }
+    .btn-search:hover{
+    color: white;
+    background-color:#fe424d ;
+  }
+
+  .btn-search i{
+    display: inline;
+    margin-right: 0.5rem;
+  }
+
+</style>
+<nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/list"><i class="fa-regular fa-compass"></i></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+      aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+        <li class="nav-item">
+          <a class="nav-link" href="/list">Explore</a>
+        </li>
+
+      </ul>
+      <div class="navbar-nav ms-auto">
+        <form class="d-flex">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-search" type="submit"><i class="fa-solid fa-magnifying-glass"></i>Search</button>
+        </form>
+      </div>
+
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/lists/new">air bnb your home</a>
+        </li>
+        <% if(!currtUser){ %>
+          <li class="nav-item">
+
+            <a class="nav-link " href="/singup"><b>Sign up</b> </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/login"><b>Login</b></a>
+          </li>
+
+          <% } %>
+            <% if(currtUser) {%>
+              <li class="nav-item">
+                <a class="nav-link" href="/logout"> <b>logout</b> </a>
+              </li>
+              <% } %>
+
+
+      </ul>
+      <span class="navbar-text">
+        <!-- Navbar text with an inline element -->
+      </span>
+    </div>
+  </div>
+</nav>

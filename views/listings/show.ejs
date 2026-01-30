@@ -1,0 +1,161 @@
+<% layout('/layout/boiler.ejs') %>
+ 
+  <div class="container mt-4">
+
+    <!-- Title -->
+    <h2 class="text-center mb-4 ;">
+      <%= listing.title %>
+    </h2>
+
+    <div class="row justify-content-center border-0">
+
+      <!-- Listing Card -->
+      <div class="col-md-8 col-lg-6">
+
+        <div class="card mb-4">
+
+          <img src="<%= listing.image.url %>" class="card-img-top show-image" alt="listing image">
+
+          <div class="card-body">
+
+            <p>
+              <strong>Owned by:</strong>
+              <%= listing.owner.username %>
+            </p>
+
+            <p>
+              <%= listing.description %>
+            </p>
+
+            <p>
+              <strong>Price:</strong>
+              ₹ <%= listing.price.toLocaleString('en-IN') %>
+            </p>
+
+            <p>
+              <strong>Location:</strong>
+              <%= listing.location %>, <%= listing.country %>
+            </p>
+
+            <!-- Owner Buttons -->
+            <% if (currtUser && listing.owner._id.equals(currtUser._id)) { %>
+
+              <div class="d-flex gap-2">
+                <a href="/listings/<%= listing._id %>/edit" class="btn btn-primary">
+                  Edit
+                </a>
+
+                <form action="/del/<%= listing._id %>?_method=DELETE" method="POST">
+                  <button class="btn btn-danger">
+                    Delete
+                  </button>
+                </form>
+              </div>
+
+              <% } %>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <hr>
+
+    <!-- Review Form -->
+    <% if (currtUser) { %>
+
+      <div class="row justify-content-center mb-4">
+
+        <div class="col-md-6">
+
+          <h4>Leave a Review</h4>
+
+          <form action="/listings/<%= listing._id %>/reviews" method="POST" class="needs-validation" novalidate>
+
+            <fieldset class="starability-slot mb-3">
+
+              <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="0" checked>
+
+              <% for(let i=1;i<=5;i++){ %>
+                <input type="radio" id="rate<%=i%>" name="review[rating]" value="<%=i%>" required>
+                <label for="rate<%=i%>">
+                  <%=i%> star
+                </label>
+                <% } %>
+
+            </fieldset>
+
+            <div class="mb-3">
+              <label class="form-label">Comment</label>
+              <textarea name="review[comment]" class="form-control" rows="4" required></textarea>
+            </div>
+
+            <button class="btn btn-outline-dark">
+              Submit
+            </button>
+
+          </form>
+
+        </div>
+      </div>
+
+      <% } %>
+
+
+
+        <!-- Reviews -->
+        <h4 class="mb-3">All Reviews</h4>
+
+        <div class="row">
+
+          <% for(let rev of listing.reviews){ %>
+
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+
+              <div class="card border border-2 rounded-2 shadow-sm">
+
+                <div class="card-body">
+
+                  <h6>@<%= rev.author.username %>
+                  </h6>
+
+                  <p>
+                    <%= rev.comment %>
+                  </p>
+
+                  <p class="starability-result" data-rating="<%= rev.rating %>">
+                    Rated: <%= rev.rating %> stars
+                  </p>
+
+                </div>
+
+                <form action="/listings/<%= listing._id %>/reviews/<%= rev._id %>?_method=DELETE" method="POST"
+                  class="p-2">
+
+                  <button class="btn btn-sm btn-dark">
+                    Delete
+                  </button>
+
+                </form>
+
+              </div>
+
+            </div>
+
+            <% } %>
+
+        </div>
+
+        <p>
+          <strong>Location:</strong>
+          <%= listing.location %>, <%= listing.country %>
+        </p>
+
+        <div id="map" data-lat="<%= listing.geometry.coordinates[1] %>"
+          data-lng="<%= listing.geometry.coordinates[0] %>" style="height:300px;  ">
+        </div>
+        
+
+  </div>
+
+  
