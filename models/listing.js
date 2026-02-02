@@ -41,20 +41,9 @@ const listingSchema = new Schema({
   category: {
     type: String,
     required: true
-  },
-
-
+  }
 });
 
-listingSchema.post('findOneAndDelete', async (listing) => {
-  if (listing) {
-    await Review.deleteMany({ _id: { $in: listing.reviews } })
-
-  }
-
-})
-
-
-const Listing = mongoose.model('Listing', listingSchema);
-
-module.exports = Listing;
+module.exports =
+  mongoose.models.Listing ||
+  mongoose.model("Listing", listingSchema);
