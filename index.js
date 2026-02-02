@@ -29,10 +29,13 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local')
 const User = require('./models/user')
 const userRouter = require('./routes/user')
+const bookingRoutes = require('./routes/booking');
 const { islogin, isOwner, saveredirectUrl, geocodeLocation, autoFixGeometry } = require('./middleware')
 const multer = require('multer')
 const { storage } = require('./cloudConfig')
 const upload = multer({ storage })
+ 
+
 
 
 
@@ -114,6 +117,8 @@ app.use((req, res, next) => {
 
 app.use('/listings/:id/reviews', reviews);
 app.use('/', userRouter);
+app.use("/lists/:id/book", bookingRoutes);
+app.use("/", bookingRoutes);
 
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'));
@@ -154,7 +159,31 @@ app.get('/list', wrapAsync(async (req, res, next) => {
 })
 );
 
+app.get('/lists', wrapAsync(async (req,res)=>{
 
+    const { q } = req.query;
+if (!q || q.trim() === "") {
+        const allListings = await Listing.find({});
+        return res.redirect('/list')
+    }
+
+    let query = {
+        $or: [
+            { title: { $regex: q, $options: "i" } },
+            { location: { $regex: q, $options: "i" } },
+            { country: { $regex: q, $options: "i" } }
+        ]
+    };
+
+    // If q is number → search price
+    if (!isNaN(q)) {
+        query.$or.push({ price: Number(q) });
+    }
+
+    const listings = await Listing.find(query);
+
+    res.render("listings/index.ejs", { alldata: listings });
+}))
 
 app.get('/lists/new', islogin, (req, res, next) => {
 

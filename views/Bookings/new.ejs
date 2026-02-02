@@ -1,0 +1,37 @@
+<% layout('/layout/boiler.ejs') %>
+
+<h3>Booking: <%= listing.title %></h3>
+
+<form action="/lists/<%= listing._id %>/book" method="POST">
+
+<div class="mb-3">
+  <label>Name</label>
+  <input class="form-control" value="<%= user.username %>" readonly>
+</div>
+
+<div class="mb-3">
+  <label>Email</label>
+  <input class="form-control" value="<%= user.email %>" readonly>
+</div>
+
+<div class="mb-3">
+  <label>Check In</label>
+  <input type="date" name="checkIn" class="form-control" required>
+</div>
+
+<div class="mb-3">
+  <label>Check Out</label>
+  <input type="date" name="checkOut" class="form-control" required>
+</div>
+
+<div class="mb-3">
+  <label>Guests</label>
+  <input type="number" name="guests" min="1"
+         class="form-control" required>
+</div>
+
+<button class="btn btn-success">
+  Confirm Booking
+</button>
+
+</form>

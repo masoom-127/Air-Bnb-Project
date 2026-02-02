@@ -1,5 +1,5 @@
 <% layout('/layout/boiler.ejs') %>
- 
+
   <div class="container mt-4">
 
     <!-- Title -->
@@ -24,6 +24,7 @@
             </p>
 
             <p>
+            <strong>description:</strong>
               <%= listing.description %>
             </p>
 
@@ -36,6 +37,18 @@
               <strong>Location:</strong>
               <%= listing.location %>, <%= listing.country %>
             </p>
+            <a href="/lists/<%= listing._id %>/book">
+                  <button class="btn btn-primary mb-2">
+                  Book This Listing
+                  </button>
+                  </a>
+
+            </form>
+
+             
+
+</form>
+
 
             <!-- Owner Buttons -->
             <% if (currtUser && listing.owner._id.equals(currtUser._id)) { %>

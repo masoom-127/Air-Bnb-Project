@@ -6,7 +6,7 @@
   forms.forEach(form => {
     form.addEventListener('submit', event => {
 
-      // 🔥 REMOVE SPACES
+      //  REMOVE SPACES
       const fields = form.querySelectorAll('input, textarea');
       fields.forEach(field => {
         field.value = field.value.trim();

@@ -1,0 +1,39 @@
+<% layout('/layout/boiler.ejs') %>
+
+<h3>My Bookings</h3>
+
+<% if(bookings.length === 0){ %>
+  <p>No bookings yet.</p>
+<% } %>
+
+<div class="row">
+
+<% for(let b of bookings){ %>
+
+<div class="col-md-4">
+
+  <div class="card mb-3">
+
+    <img src="<%= b.listing.image.url %>"
+         class="card-img-top"
+         style="height:200px">
+
+    <div class="card-body">
+
+      <h5><%= b.listing.title %></h5>
+
+      <p>
+        Check In: <%= b.checkIn.toDateString() %> <br>
+        Check Out: <%= b.checkOut.toDateString() %> <br>
+        Guests: <%= b.guests %>
+      </p>
+
+    </div>
+
+  </div>
+
+</div>
+
+<% } %>
+
+</div>

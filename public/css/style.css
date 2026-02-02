@@ -1,6 +1,18 @@
 body{
     font-family: "Plus Jakarta Sans", sans-serif !important;
 }
+html, body {
+    height: 100% !important;
+}
+
+body {
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.container {
+    flex: 1;
+}
 
 .navbar{
     height: 5rem;
@@ -107,4 +119,21 @@ text-decoration: underline ;
     height: 300px; 
     border-radius: 10px;
      margin-bottom: 20px;
+}
+
+
+ 
+
+@media (max-width: 991.98px) {      /* mobile/tablet sizes */
+  .navbar-collapse.show {
+    position: relative;             /* important */
+    z-index: 1000;
+    background-color: #f8f9fa;      /* or your bg color - prevents transparency overlap */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* nice shadow */
+  }
+
+  /* Optional: give some space below expanded menu */
+  .navbar-collapse.show ~ * {
+    margin-top: 1rem;               /* or more if needed */
+  }
 }

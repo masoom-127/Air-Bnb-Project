@@ -1,0 +1,32 @@
+<% layout('/layout/boiler.ejs') %>
+<h3>My Bookings</h3>
+
+<div id="bookingFormBox" style="display:none; margin-top:20px;">
+
+<form action="" method="POST">
+
+    <div class="mb-2">
+        <label>Check In</label>
+        <input type="date" name="checkIn" class="form-control" required>
+    </div>
+
+    <div class="mb-2">
+        <label>Check Out</label>
+        <input type="date" name="checkOut" class="form-control" required>
+    </div>
+
+    <div class="mb-2">
+        <label>Guests</label>
+        <input type="number" name="guests" min="1" value="1" class="form-control">
+    </div>
+
+    <button class="btn btn-success mt-2">
+        Confirm Booking
+    </button>
+
+</form>
+
+</div>
+
+
+ 

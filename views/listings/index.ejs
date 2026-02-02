@@ -1,142 +1,162 @@
-<% layout ('/layout/boiler.ejs') %>
+<% layout('/layout/boiler.ejs') %>
 
+<% if(alldata.length === 0){ %>
+   <h4 class="text-center mt-4">No listings found</h4>
+<% } %>
 
     <style>
+       /* FILTER BAR  */
         #filters {
             display: flex;
             flex-wrap: wrap;
+            align-items: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
         }
 
         .filter {
             text-align: center;
-            margin-right: 2rem;
-            margin-top: 2rem;
             opacity: 0.7;
+            cursor: pointer;
         }
 
         .filter:hover {
             opacity: 1;
-            cursor: pointer;
-
         }
 
         .filter p {
             font-size: 0.8rem;
+            margin-top: 0.2rem;
         }
 
+        /* GST TOGGLE */
         .tax-info {
             display: none;
+            color: gray;
+            font-size: 0.9rem;
         }
-        .tax-togel{
-            border: 1 solid black;
-            border-radius: 3rem;
-            padding: 1rem;
-            align-items: center;
-            margin-left: 3rem;
+
+        .tax-toggle {
+            border: 1px solid black;
+            border-radius: 2rem;
+            padding: 0.7rem 1rem;
             display: flex;
-             
+            align-items: center;
+            margin-left: 1rem;
         }
     </style>
+
+    <!-- FILTER BAR  -->
     <div id="filters">
 
-        <div class="filter">
-            <div><i class="fa-solid fa-fire"></i></div>
-            <p>trend</p>
+        <!-- All Listings -->
+        <div class="filter" data-category="all">
+            <i class="fa-solid fa-list"></i>
+            <p>All</p>
         </div>
 
-        <div class="filter">
-            <div><i class="fa-solid fa-mountain-city"></i></div>
-            <p>city</p>
+        <div class="filter" data-category="trend">
+            <i class="fa-solid fa-fire"></i>
+            <p>Trend</p>
         </div>
 
-        <div class="filter">
-            <div><i class="fa-solid fa-mountain-city"></i></div>
-            <p>icon city</p>
+        <div class="filter" data-category="city">
+            <i class="fa-solid fa-mountain-city"></i>
+            <p>City</p>
         </div>
 
-        <div class="filter">
-            <div><i class="fa-solid fa-mountain"></i></div>
-            <p>mountains</p>
+        <div class="filter" data-category="mountain">
+            <i class="fa-solid fa-mountain"></i>
+            <p>Mountain</p>
         </div>
 
-
-        <div class="filter">
-            <div><i class="fa-brands fa-fort-awesome"></i></div>
-            <p>castles</p>
+        <div class="filter" data-category="pool">
+            <i class="fa-solid fa-person-swimming"></i>
+            <p>Pools</p>
         </div>
 
-        <div class="filter">
-            <div><i class="fa-solid fa-person-swimming"></i></div>
-            <p>amzing pools</p>
+        <div class="filter" data-category="farm">
+            <i class="fa-solid fa-tractor"></i>
+            <p>Farms</p>
         </div>
 
+        <!-- GST TOGGLE -->
 
-        <div class="filter">
-            <div><i class="fa-solid fa-caravan"></i></i></div>
-            <p>camping</p>
-        </div>
-
-        <div class="filter">
-            <div><i class="fa-solid fa-tractor"></i></div>
-            <p>farms </p>
+        <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="taxSwitch">
+            <label class="form-check-label" for="taxSwitch">
+                Display price after GST
+            </label>
         </div>
 
 
-        <div class="filter">
-            <div><i class="fa-solid fa-snowflake"></i></div>
-            <p>artics</p>
-        </div>
-        <div class="tax-togel">
 
-            <div class="form-check-reverse form-switch">
-                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                <label class="form-check-label" for="flexSwitchCheckDefault">display totol after taxes</label>
-            </div>
-        </div>
+
 
     </div>
 
+   <!-- listing -->
+    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-4">
 
+        <% for(let li of alldata){ %>
+            <div class="col">
+                <a href="/lists/<%= li._id %>" class="listing-link">
 
-    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
-        <% for(let li of alldata) {%>
-            <a href="/lists/<%= li._id %>" class="listing-link">
-                <div class="card col listing-card">
-                    <img src="<%=li.image.url%>" class="card-img-top " alt="listing image" style="height: 20rem">
-                    <div class="card-img-overlay">
-                        <!-- <h5 class="card-title">Card title</h5> -->
-                        <p class="card-text">This is a wider </p>
-                        <!-- <p class="card-text"><small>Last updated 3 mins ago</small></p> -->
-                    </div>
-                    <div class="card-body">
-                        <p class="card-text">
+                    <div class="card listing-card" data-category="<%= li.category %>">
+
+                        <img src="<%= li.image.url %>" class="card-img-top" style="height:20rem">
+
+                        <div class="card-body">
                             <b>
                                 <%= li.title %>
                             </b> <br>
-                            &#8377; <%= li.price.toLocaleString('en-IN') %>
-                                <i class="tax-info"> &nbsp;&nbsp; +18 gst</i>
-                        </p>
+
+                            ₹ <span class="base-price">
+                                <%= li.price.toLocaleString('en-IN') %>
+                            </span>
+
+                            <span class="tax-info">
+                                (+18% GST)
+                            </span>
+                        </div>
+
                     </div>
-                </div>
-            </a>
+                </a>
+            </div>
             <% } %>
 
     </div>
 
+    <!-- ================= JAVASCRIPT ================= -->
     <script>
-        let taxswitch = document.getElementById("flexSwitchCheckDefault")
-        taxswitch.addEventListener('click', () => {
-            console.log('clicl')
-            let taxinfo = document.getElementById('tax-info')
-            console.log(taxinfo)
-            for (info of taxinfo) {
-                if(info.style.display!='inline'){
-                    info.style.display = 'inline'
+        // ================= GST Toggle =================
+        const taxSwitch = document.getElementById("taxSwitch");
+        const taxInfos = document.querySelectorAll(".tax-info");
 
-                }else{
-                    info.style.display='none'
-                }
-                 
-            }
-        })
+        taxSwitch.addEventListener("change", () => {
+            taxInfos.forEach(item => {
+                item.style.display = taxSwitch.checked ? "inline" : "none";
+            });
+        });
+
+        // ================= Category Filters =================
+        const filters = document.querySelectorAll('.filter');
+        const listingCols = document.querySelectorAll('.row .col'); // select the columns
+
+        filters.forEach(filter => {
+            filter.addEventListener('click', () => {
+                const category = filter.dataset.category;
+
+                listingCols.forEach(col => {
+                    const card = col.querySelector('.listing-card');
+                    const cardCategory = card.dataset.category;
+
+                    if (category === "all" || cardCategory === category) {
+                        col.style.display = ""; // reset to default, Bootstrap handles layout
+                    } else {
+                        col.style.display = "none"; // hide column
+                    }
+                });
+            });
+        });
     </script>

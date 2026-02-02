@@ -16,7 +16,7 @@
   }
 
 </style>
-<nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
+<nav class="navbar navbar-expand-md bg-body-light border-bottom">
   <div class="container-fluid">
     <a class="navbar-brand" href="/list"><i class="fa-regular fa-compass"></i></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
@@ -32,15 +32,15 @@
 
       </ul>
       <div class="navbar-nav ms-auto">
-        <form class="d-flex">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <form class="d-flex" action="/lists" method="GET">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="q">
           <button class="btn btn-search" type="submit"><i class="fa-solid fa-magnifying-glass"></i>Search</button>
         </form>
       </div>
 
       <ul class="navbar-nav ms-auto">
         <li class="nav-item">
-          <a class="nav-link" href="/lists/new">air bnb your home</a>
+          <a class="nav-link" href="/lists/new">air bnb add new listing</a>
         </li>
         <% if(!currtUser){ %>
           <li class="nav-item">
@@ -56,6 +56,9 @@
               <li class="nav-item">
                 <a class="nav-link" href="/logout"> <b>logout</b> </a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/user/my"> <b>show your listings</b> </a>
+              </li>
               <% } %>
 
 
@@ -66,3 +69,4 @@
     </div>
   </div>
 </nav>
+
