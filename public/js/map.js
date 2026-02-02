@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (!mapDiv) return;
   const lat = mapDiv.dataset.lat;
   const lng = mapDiv.dataset.lng;
+  console.log(lat, lng);
 
   // Create map
   const map = L.map("map").setView([lat, lng], 12);

@@ -27,7 +27,7 @@ const { date } = require('joi');
 const flash = require('connect-flash')
 const passport = require('passport');
 const LocalStrategy = require('passport-local')
-const User = require('./models/user')
+const User = require('./models/User')
 const userRouter = require('./routes/user')
 const bookingRoutes = require('./routes/booking');
 const { islogin, isOwner, saveredirectUrl, geocodeLocation, autoFixGeometry } = require('./middleware')
@@ -97,7 +97,7 @@ passport.deserializeUser(User.deserializeUser());
 app.use((req, res, next) => {
     res.locals.success = req.flash("success")//this is the middleware to the have to add the create flash massage 
     res.locals.error = req.flash('error')
-    res.locals.currtUser = req.user;
+    res.locals.currtUser = req.user ;
     next();
 })
 
@@ -215,7 +215,7 @@ app.get('/lists/:id', autoFixGeometry, wrapAsync(async (req, res) => {
 
 
 
-    console.log(listing)
+    console.log(listing.geometry.coordinates)
     res.render('./listings/show.ejs', { listing })
 })
 );

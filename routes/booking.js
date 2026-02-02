@@ -5,7 +5,7 @@ const wrapAsync = require("../util/wrapAsync");
 const { islogin } = require("../middleware");
 
 const Listing = require("../models/Listing");
-const Booking = require("../models/booking");
+const Booking = require("../models/Booking");
 
 /* SHOW BOOKING FORM */
 router.get("/", islogin, wrapAsync(async (req, res) => {
