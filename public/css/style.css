@@ -137,3 +137,40 @@ text-decoration: underline ;
     margin-top: 1rem;               /* or more if needed */
   }
 }
+
+ 
+@media (max-width: 576px) {
+
+    /* One column full width */
+    .row-cols-sm-1 > .col {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    /* Reduce image height */
+    .listing-card img {
+        height: 14rem !important;
+        object-fit: cover;
+    }
+
+    /* Center cards */
+    .listing-card {
+        margin: auto;
+    }
+
+    /* Filter bar scrollable */
+    #filters {
+        overflow-x: auto;
+        white-space: nowrap;
+        padding-bottom: 0.5rem;
+    }
+
+    .filter {
+        min-width: 70px;
+    }
+
+    /* Smaller text */
+    .card-body {
+        font-size: 0.95rem;
+    }
+}
