@@ -12,7 +12,7 @@ router.get("/", islogin, wrapAsync(async (req, res) => {
 
   const listing = await Listing.findById(req.params.id);
 
-  res.render("bookings/new", {
+  res.render("Bookings/new", {
     listing,
     user: req.user
   });
@@ -48,7 +48,7 @@ router.get("/user/my", islogin, wrapAsync(async (req, res) => {
     .populate("listing");
     console.log(bookings)
 
-  res.render("Bookings/my.ejs", { bookings });
+  res.render("Bookings/my", { bookings });
 
 }));
 
