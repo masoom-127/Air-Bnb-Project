@@ -1,81 +1,80 @@
 const Listing = require('./models/Listing');
 const Review = require('./models/Review');
 
- 
+
 
 //this is middleware to check the user is login or not
 module.exports.islogin = (req, res, next) => {
-    // console.log(req.path, '..',req.originalUrl);
-    if (!req.isAuthenticated()) {
-        //redirect url
-        req.session.redirectUrl = req.originalUrl;
-        req.flash('error', 'yoou must be logined in to create listing')
-        return res.redirect("/login");
-    }
-    next();
+  // console.log(req.path, '..',req.originalUrl);
+  if (!req.isAuthenticated()) {
+    //redirect url
+    req.session.redirectUrl = req.originalUrl;
+    req.flash('error', 'yoou must be logined in to create listing')
+    return res.redirect("/login");
+  }
+  next();
 
 }
 
 module.exports.saveredirectUrl = (req, res, next) => {
-    if (req.session.redirectUrl) {
-        res.locals.redirectUrl = req.session.redirectUrl
-    }
-    next();
+  if (req.session.redirectUrl) {
+    res.locals.redirectUrl = req.session.redirectUrl
+  }
+  next();
 }
 
 module.exports.isOwner = async (req, res, next) => {
-    const { id } = req.params;
+  const { id } = req.params;
 
-    const listings = await Listing.findById(id);
+  const listings = await Listing.findById(id);
 
-    if (!listings.owner._id.equals(req.user._id)) {
-        req.flash("error", "You are not owner of this listing");
-        return res.redirect(`/lists/${id}`);
-    }
+  if (!listings.owner._id.equals(req.user._id)) {
+    req.flash("error", "You are not owner of this listing");
+    return res.redirect(`/lists/${id}`);
+  }
 
-    next();
+  next();
 };
 
 
 
 module.exports.isReviewAuthor = async (req, res, next) => {
-    let { id, reviewsId } = req.params
+  let { id, reviewsId } = req.params
 
-    let review = await Review.findById(reviewsId)
-    if (!review.author.equals(res.locals.currtUser._id)) {
-        req.flash('error', 'you are not author of the reviews ')
-        return res.redirect(`/lists/${id}`)
-    }
-    next();
+  let review = await Review.findById(reviewsId)
+  if (!review.author.equals(res.locals.currtUser._id)) {
+    req.flash('error', 'you are not author of the reviews ')
+    return res.redirect(`/lists/${id}`)
+  }
+  next();
 
 
 
 }
 
 
- 
 
-module.exports.geocodeLocation = async (req,res,next)=> {
+
+module.exports.geocodeLocation = async (req, res, next) => {
   try {
     const location = req.body.listing?.location;
-
-    // If no location provided
     if (!location) return next();
 
-    // If already has geometry, skip
-    // if (req.body.listing.geometry) return next();
+    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(location)}`;
 
-    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${location}`;
-    const response = await fetch(url);
+    const response = await fetch(url, {
+      headers: {
+        "User-Agent": "nbm-air-project"
+      }
+    });
+
     const data = await response.json();
-    console.log('what came to respinse',data)
 
     if (!data.length) {
       req.flash("error", "Invalid location");
       return res.redirect("back");
     }
 
-    // Attach geometry
     req.body.listing.geometry = {
       type: "Point",
       coordinates: [
@@ -85,15 +84,15 @@ module.exports.geocodeLocation = async (req,res,next)=> {
     };
 
     next();
-
   } catch (err) {
     console.log(err);
     next(err);
   }
-}
+};
 
 
-module.exports.autoFixGeometry = async  (req, res, next)=> {
+
+module.exports.autoFixGeometry = async (req, res, next) => {
   try {
     const { id } = req.params;
 
@@ -111,7 +110,11 @@ module.exports.autoFixGeometry = async  (req, res, next)=> {
 
     // No geometry → convert location to coordinates
     const url = `https://nominatim.openstreetmap.org/search?format=json&q=${listing.location}`;
-    const response = await fetch(url);
+    const response = await fetch(url, {
+      headers: {
+        "User-Agent": "nbm-air-project"
+      }
+    });
     const data = await response.json();
 
     if (!data.length) {
