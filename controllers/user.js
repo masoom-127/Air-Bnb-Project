@@ -33,8 +33,9 @@ module.exports.renderlogin=(req, res) => {
 }
 
 module.exports.Login=async (req, res) => {
-            req.flash('success', 'welcome to wanderlust ')
+            req.flash('success', `Welcome back, ${req.user.username || 'user'}!`);
             let redirectUrl=res.locals.redirectUrl ||'/list';
+            delete req.session.redirectUrl;
             res.redirect( redirectUrl);
         }
 

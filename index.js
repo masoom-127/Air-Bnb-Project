@@ -22,7 +22,7 @@ const ExpressError = require('./util/ExpressError')
 const { listingSchema } = require("./schema");
 const reviews = require('./routes/review')
 const session = require('express-session');
-const {MongoStore} = require('connect-mongo');
+const { MongoStore } = require('connect-mongo');
 const { date } = require('joi');
 const flash = require('connect-flash')
 const passport = require('passport');
@@ -34,7 +34,7 @@ const { islogin, isOwner, saveredirectUrl, geocodeLocation, autoFixGeometry } = 
 const multer = require('multer')
 const { storage } = require('./cloudConfig')
 const upload = multer({ storage })
- 
+
 
 
 
@@ -71,7 +71,7 @@ store.on('error', () => {
 console.log(MongoStore)
 const sessionoptions = {
     store,
-   secret: process.env.secret,
+    secret: process.env.secret,
     resave: false,
     saveUninitialized: true,
     cookie: {
@@ -97,7 +97,7 @@ passport.deserializeUser(User.deserializeUser());
 app.use((req, res, next) => {
     res.locals.success = req.flash("success")//this is the middleware to the have to add the create flash massage 
     res.locals.error = req.flash('error')
-    res.locals.currtUser = req.user ;
+    res.locals.currtUser = req.user;
     next();
 })
 
@@ -159,10 +159,10 @@ app.get('/list', wrapAsync(async (req, res, next) => {
 })
 );
 
-app.get('/lists', wrapAsync(async (req,res)=>{
+app.get('/lists', wrapAsync(async (req, res) => {
 
     const { q } = req.query;
-if (!q || q.trim() === "") {
+    if (!q || q.trim() === "") {
         const allListings = await Listing.find({});
         return res.redirect('/list')
     }
