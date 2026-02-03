@@ -8,9 +8,14 @@ const Listing = require("../models/Listing");
 const Booking = require("../models/Booking");
 
 /* SHOW BOOKING FORM */
-router.get("/", islogin, wrapAsync(async (req, res) => {
+router.get("/:id/book", islogin, wrapAsync(async (req, res) => {
 
   const listing = await Listing.findById(req.params.id);
+
+  if (!listing) {
+    req.flash("error", "Listing not found");
+    return res.redirect("/list");
+  }
 
   res.render("Bookings/new", {
     listing,
@@ -20,8 +25,9 @@ router.get("/", islogin, wrapAsync(async (req, res) => {
 }));
 
 
+
 /* SAVE BOOKING */
-router.post("/", islogin, wrapAsync(async (req, res) => {
+router.post("/:id/book", islogin, wrapAsync(async (req, res) => {
 
   const { checkIn, checkOut, guests } = req.body;
 
